@@ -1,7 +1,7 @@
 from flask import Flask
-from flask import escape,url_for,render_template
+from flask import escape,url_for,render_template,request,redirect,flash
 app=Flask(__name__)
-
+app.secret_key = 'dev'
 # 运行前输入 $env:FLASK_ENV = "development" 设置为调试模式
 # flask run 运行
 @app.route('/home')
@@ -25,6 +25,16 @@ def test_url_for():
 def index():
     return render_template('index.html',name=name,movies=movies)
 
+@app.route('/predict',methods=['GET','POST'])
+def pre():
+    if request.method =='POST':
+        hero1=request.form.get('hero1')
+        hero2=request.form.get('hero2')
+        print(hero1)
+        print(hero2)
+        flash('Invalid input.')
+        return redirect(url_for('index'))
+    return render_template('predict.html')
 
 name = 'Grey Li'
 movies = [
